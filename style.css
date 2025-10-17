@@ -13,25 +13,35 @@ body {
   width: 100vw;
 }
 
-/* Carta central con flotación */
+/* Canvas Matrix */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+/* Escena y cartas para efecto de plano */
+.scene {
+  perspective: 1000px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 10;
+}
+
 .carta {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+  transition: all 1s ease-in-out;
   text-align: center;
   max-width: 600px;
   background: rgba(0,0,0,0.6);
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 0 30px #00ff00;
-  z-index: 10;
-  animation: floatText 3s ease-in-out infinite alternate;
-}
-
-@keyframes floatText {
-  0% { transform: translate(-50%, -50%) translateY(-5px); }
-  100% { transform: translate(-50%, -50%) translateY(5px); }
 }
 
 .carta h1 {
@@ -52,15 +62,19 @@ body {
   text-shadow: 0 0 4px #00ff00;
 }
 
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
+/* Animación de cambio de plano */
+.carta.exit {
+  transform: translate(-50%, -50%) scale(0.1) rotateY(90deg);
+  opacity: 0;
 }
 
-/* Botón música */
-#btn-musica {
+.carta.enter {
+  transform: translate(-50%, -50%) scale(1) rotateY(0deg);
+  opacity: 1;
+}
+
+/* Botones */
+button {
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -72,10 +86,10 @@ canvas {
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  z-index: 11;
+  z-index: 20;
 }
 
-#btn-musica:hover {
+button:hover {
   background: #ff4757;
   transform: translateX(-50%) scale(1.1);
 }
