@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🎉 Cuidao Paloma</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <!-- Música -->
   <audio id="musica" loop>
-    <source src="musica.mp3" type="audio/mpeg">
+    <source src="musica.mp3" type="audio/mpeg" />
   </audio>
 
   <!-- Fondo Matrix -->
@@ -18,8 +18,18 @@
 
   <!-- Contenedor de carta -->
   <div class="scene">
-    <div class="carta" id="carta">
+    <div class="carta active" id="carta">
       <h1></h1>
       <p></p>
     </div>
-  </
+  </div>
+
+  <!-- Botones -->
+  <button id="btn-inicio" class="boton">🎉 Iniciar</button>
+  <button id="btn-siguiente" class="boton" style="display:none;">➡️ Siguiente</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
