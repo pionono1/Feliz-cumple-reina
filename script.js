@@ -3,15 +3,18 @@ const musica = document.getElementById("musica");
 const btnInicio = document.getElementById("btn-inicio");
 const btnSiguiente = document.getElementById("btn-siguiente");
 const scene = document.querySelector(".scene");
+const inputNombre = document.getElementById("nombre");
+const inicioDiv = document.getElementById("inicio");
 
 // MENSAJES
 const mensajes = [
-  {titulo:"🎉 ¡Feliz Cumpleaños, Aleeee!", mensaje:"Espero que puedas disfrutar este dia increible, eres increible y espero no lo hayas olvidado", color:"#00ff00"},
-  {titulo:"Que tengas muchas alegrias en tu vida, te deseo lo mejor", mensaje:"Espero puedas tener muchas aventuras y divertirte con los compas 🎈", color:"#7CFC00"},
-  {titulo:"🌟 Sylus estaría orgulloso de ti", mensaje:"No gastes mucho tu dinero y trata de ahorrar mamita 💫", color:"#00ffff"}
+  {titulo:"🎉 ¡Feliz Cumpleaños!", mensaje:"Espero que puedas disfrutar este día increíble. Eres una persona maravillosa y espero no lo hayas olvidado 💚", color:"#00ff00"},
+  {titulo:"🌈 Que tengas muchas alegrías en tu vida", mensaje:"Espero vivas muchas aventuras, que te diviertas y que todo te salga increíble 🎈", color:"#7CFC00"},
+  {titulo:"💫 Sylus estaría orgulloso de ti", mensaje:"No gastes mucho tu dinero y trata de ahorrar mamita 🌟", color:"#00ffff"}
 ];
 
 let mensajeActual = 0;
+let nombreFinal = "Aleeee"; // valor por defecto
 
 // MATRIX CANVAS
 const canvas = document.getElementById("matrix");
@@ -24,15 +27,11 @@ const specialTexts = ["Te quiero mucho", "Feliz cumpleaños"];
 const fontSize = 16;
 const columns = canvas.width / fontSize;
 const drops = [];
-
-for (let x = 0; x < columns; x++) {
-  drops[x] = Math.random() * canvas.height;
-}
+for (let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
 
 function drawMatrix() {
   ctx.fillStyle = "rgba(0,0,0,0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-
   ctx.font = fontSize + "px monospace";
 
   for (let i = 0; i < drops.length; i++) {
@@ -41,7 +40,6 @@ function drawMatrix() {
       text = specialTexts[Math.floor(Math.random() * specialTexts.length)];
       ctx.fillStyle = "#7CFC00";
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      ctx.fillStyle = "#00ff00";
       continue;
     }
     ctx.fillStyle = "#00ff00";
@@ -51,7 +49,6 @@ function drawMatrix() {
   }
 }
 setInterval(drawMatrix, 50);
-
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -84,11 +81,10 @@ function typeMessage(cartaDiv, tituloText, mensajeText) {
       btnSiguiente.style.display = "block";
     }
   }
-
   typeTitulo();
 }
 
-// Confetti multicolor
+// Confetti
 function launchConfetti() {
   const confettiCount = 120;
   const confetti = [];
@@ -103,10 +99,7 @@ function launchConfetti() {
   }
 
   function drawConfetti() {
-    ctx.fillStyle = "rgba(0,0,0,0.1)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
     drawMatrix();
-
     for (let i = 0; i < confetti.length; i++) {
       ctx.beginPath();
       ctx.arc(confetti[i].x, confetti[i].y, confetti[i].r, 0, Math.PI * 2);
@@ -121,7 +114,7 @@ function launchConfetti() {
   drawConfetti();
 }
 
-// Globos flotando
+// Globos
 function launchGlobos() {
   const globoCount = 5;
   const globos = [];
@@ -150,11 +143,11 @@ function launchGlobos() {
   drawGlobos();
 }
 
-// Mensaje sorpresa
+// Sorpresa
 function showSorpresa() {
   const sorpresa = document.createElement("div");
   const emojis = ["🎁", "🎈", "✨", "💖"];
-  sorpresa.textContent = emojis[Math.floor(Math.random()*emojis.length)] + " Sorpresa!";
+  sorpresa.textContent = emojis[Math.floor(Math.random()*emojis.length)] + " ¡Sorpresa!";
   sorpresa.className = "sorpresa";
   document.body.appendChild(sorpresa);
   setTimeout(()=>sorpresa.remove(), 2000);
@@ -175,36 +168,21 @@ function fadeInMusica() {
 
 // BOTÓN INICIO
 btnInicio.addEventListener("click", () => {
+  nombreFinal = inputNombre.value.trim() || "Aleeee";
+  inicioDiv.style.display = "none";
+
   musica.volume = 0;
   musica.play().catch(()=>{});
   fadeInMusica();
-  btnInicio.style.display = "none";
-
-  // Botón flotante de música
-  const musicToggle = document.createElement("button");
-  musicToggle.id = "music-toggle";
-  musicToggle.textContent = "⏸️ Pausar música";
-  document.body.appendChild(musicToggle);
-
-  musicToggle.addEventListener("click", () => {
-    if (musica.paused) {
-      musica.play();
-      musicToggle.textContent = "⏸️ Pausar música";
-    } else {
-      musica.pause();
-      musicToggle.textContent = "🎵 Reanudar música";
-    }
-  });
 
   const cartaDiv = document.querySelector(".carta.active");
   cartaDiv.style.color = mensajes[mensajeActual].color;
   typeMessage(cartaDiv, mensajes[mensajeActual].titulo, mensajes[mensajeActual].mensaje);
 });
 
-// BOTÓN SIGUIENTE MENSAJE
+// BOTÓN SIGUIENTE
 btnSiguiente.addEventListener("click", () => {
   btnSiguiente.style.display = "none";
-
   const current = document.querySelector(".carta.active");
   current.classList.remove("active");
   current.classList.add("exit");
@@ -212,13 +190,12 @@ btnSiguiente.addEventListener("click", () => {
   mensajeActual++;
 
   if (mensajeActual >= mensajes.length) {
-    // Mensaje final
     setTimeout(() => {
       const finalMsg = document.createElement("div");
       finalMsg.className = "final";
       finalMsg.innerHTML = `
-        <h1>🎂 ¡Feliz cumpleaños, Aleeee! 🎂</h1>
-        <p>Gracias por ser una persona increíble. 💚</p>
+        <h1>🎂 ¡Feliz cumpleaños, ${nombreFinal}! 🎂</h1>
+        <p>Gracias por ser una persona increíble 💚</p>
       `;
       document.body.appendChild(finalMsg);
     }, 1000);
