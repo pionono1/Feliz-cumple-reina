@@ -6,9 +6,9 @@ const scene = document.querySelector(".scene");
 
 // MENSAJES
 const mensajes = [
-  {titulo:"🎉 ¡Feliz Cumpleaños, Aleeee!", mensaje:"Espero que puedas disfrutar este dia increible, ere increible y espero no lo hayas olvidado", color:"#00ff00"},
+  {titulo:"🎉 ¡Feliz Cumpleaños, Aleeee!", mensaje:"Espero que puedas disfrutar este dia increible, eres increible y espero no lo hayas olvidado", color:"#00ff00"},
   {titulo:"Que tengas muchas alegrias en tu vida, te deseo lo mejor", mensaje:"Espero puedas tener muchas aventuras y divertirte con los compas 🎈", color:"#7CFC00"},
-  {titulo:"🌟 Sylus estaria orgulloso de tí", mensaje:"No gastes mucho tu dinero y trata de ahorrar mamita 💫", color:"#00ffff"}
+  {titulo:"🌟 Sylus estaría orgulloso de ti", mensaje:"No gastes mucho tu dinero y trata de ahorrar mamita 💫", color:"#00ffff"}
 ];
 
 let mensajeActual = 0;
@@ -217,7 +217,7 @@ btnSiguiente.addEventListener("click", () => {
       const finalMsg = document.createElement("div");
       finalMsg.className = "final";
       finalMsg.innerHTML = `
-        <h1>🎂 ¡Feliz cumpleaños, [nombre]! 🎂</h1>
+        <h1>🎂 ¡Feliz cumpleaños, Aleeee! 🎂</h1>
         <p>Gracias por ser una persona increíble. 💚</p>
       `;
       document.body.appendChild(finalMsg);
@@ -237,4 +237,3 @@ btnSiguiente.addEventListener("click", () => {
     next.classList.remove("enter");
   }, 1000);
 });
-
