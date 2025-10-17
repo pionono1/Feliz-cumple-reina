@@ -1,51 +1,67 @@
-body {
+* {
   margin: 0;
-  font-family: "Poppins", sans-serif;
-  text-align: center;
-  color: white;
-  background: linear-gradient(120deg, #89f7fe, #66a6ff);
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
   overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+  background: black;
+  color: #00ff00;
+  height: 100vh;
+  width: 100vw;
 }
 
-.overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: url('https://i.ibb.co/gVtKMQk/stars.gif') center/cover;
-  opacity: 0.2;
-  z-index: 0;
+/* Carta central */
+.carta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  max-width: 600px;
+  background: rgba(0,0,0,0.6);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00ff00;
+  z-index: 10;
 }
 
-.content {
-  position: relative;
-  z-index: 1;
-  padding: 40px;
-  animation: fadeIn 2s ease-in;
+.carta h1 {
+  font-size: 2em;
+  margin-bottom: 15px;
 }
 
-h1 {
-  font-size: 2.5em;
-}
-
-p {
+.carta p {
   font-size: 1.2em;
-  line-height: 1.6em;
-  margin-top: 20px;
+  line-height: 1.5em;
 }
 
-.media {
-  margin-top: 30px;
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
-.media video,
-.media img {
-  max-width: 320px;
-  border-radius: 16px;
-  margin: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+/* Botón música */
+#btn-musica {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff6b81;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 11;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+#btn-musica:hover {
+  background: #ff4757;
+  transform: translateX(-50%) scale(1.1);
 }
