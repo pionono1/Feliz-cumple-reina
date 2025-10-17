@@ -13,7 +13,7 @@ body {
   width: 100vw;
 }
 
-/* Carta central */
+/* Carta central con flotación */
 .carta {
   position: absolute;
   top: 50%;
@@ -24,18 +24,32 @@ body {
   background: rgba(0,0,0,0.6);
   padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 0 20px #00ff00;
+  box-shadow: 0 0 30px #00ff00;
   z-index: 10;
+  animation: floatText 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatText {
+  0% { transform: translate(-50%, -50%) translateY(-5px); }
+  100% { transform: translate(-50%, -50%) translateY(5px); }
 }
 
 .carta h1 {
   font-size: 2em;
   margin-bottom: 15px;
+  text-shadow: 0 0 8px #00ff00, 0 0 20px #00ff00;
+  transition: all 0.3s ease;
+}
+
+.carta h1:hover {
+  color: #7CFC00;
+  text-shadow: 0 0 12px #00ff00, 0 0 30px #00ff00;
 }
 
 .carta p {
   font-size: 1.2em;
   line-height: 1.5em;
+  text-shadow: 0 0 4px #00ff00;
 }
 
 canvas {
