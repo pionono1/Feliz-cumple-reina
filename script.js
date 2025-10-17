@@ -4,9 +4,9 @@ const scene = document.querySelector(".scene");
 
 // Mensajes
 const mensajes = [
-  {titulo:"🎉 ¡Feliz Cumpleaños Ale! 🎉", mensaje:"Espero que disfrutes este día increíble, porque te lo mereces más que nadie 💚", color:"#00ff00"},
-  {titulo:"🌈 Que tengas un año lleno de alegrías 🌈", mensaje:"Deseo que vivas muchas aventuras, que sonrías mucho y que siempre te rodee lo bueno 💫", color:"#7CFC00"},
-  {titulo:"💫 ¡Sos increíble, Ale! 💫", mensaje:"Nunca cambies tu esencia, tu humor y esa energía tan linda que te hace única 💚", color:"#00ffff"}
+  {titulo:"🎉 ¡Feliz cuuum Ale! 🎉", mensaje:"Ojala hayas disfrutado este dia corazon, te lo mereces", color:"#00ff00"},
+  {titulo:"Ojala puedas superar tu migajerismo", mensaje:"espero que siempre te rodeen cosas buenas, y puedas sonreir en todo momento", color:"#7CFC00"},
+  {titulo:"Y como siempre te dije", mensaje:"Eres alguien increible mija, por to lo q te esforzai y dema, tqm, ahora me voy a dormir q toy hecho vrga", color:"#00ffff"}
 ];
 
 let mensajeActual = 0;
@@ -98,3 +98,4 @@ window.addEventListener("load", () => {
   carta.style.color = mensajes[mensajeActual].color;
   typeMessage(carta, mensajes[mensajeActual].titulo, mensajes[mensajeActual].mensaje);
 });
+
