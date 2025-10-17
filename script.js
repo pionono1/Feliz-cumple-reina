@@ -1,186 +1,65 @@
-// ELEMENTOS
 const musica = document.getElementById("musica");
-const btnInicio = document.getElementById("btn-inicio");
 const btnSiguiente = document.getElementById("btn-siguiente");
 const scene = document.querySelector(".scene");
-const inputNombre = document.getElementById("nombre");
-const inicioDiv = document.getElementById("inicio");
 
-// MENSAJES
+// Mensajes
 const mensajes = [
-  {titulo:"🎉 ¡Feliz Cumpleaños!", mensaje:"Espero que puedas disfrutar este día increíble. Eres una persona maravillosa y espero no lo hayas olvidado 💚", color:"#00ff00"},
-  {titulo:"🌈 Que tengas muchas alegrías en tu vida", mensaje:"Espero vivas muchas aventuras, que te diviertas y que todo te salga increíble 🎈", color:"#7CFC00"},
-  {titulo:"💫 Sylus estaría orgulloso de ti", mensaje:"No gastes mucho tu dinero y trata de ahorrar mamita 🌟", color:"#00ffff"}
+  {titulo:"🎉 ¡Feliz Cumpleaños Ale! 🎉", mensaje:"Espero que disfrutes este día increíble, porque te lo mereces más que nadie 💚", color:"#00ff00"},
+  {titulo:"🌈 Que tengas un año lleno de alegrías 🌈", mensaje:"Deseo que vivas muchas aventuras, que sonrías mucho y que siempre te rodee lo bueno 💫", color:"#7CFC00"},
+  {titulo:"💫 ¡Sos increíble, Ale! 💫", mensaje:"Nunca cambies tu esencia, tu humor y esa energía tan linda que te hace única 💚", color:"#00ffff"}
 ];
 
 let mensajeActual = 0;
-let nombreFinal = "Aleeee"; // valor por defecto
 
-// MATRIX CANVAS
+// Matrix
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()*&^% ";
-const specialTexts = ["Te quiero mucho", "Feliz cumpleaños"];
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()*&^%";
 const fontSize = 16;
 const columns = canvas.width / fontSize;
-const drops = [];
-for (let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
+const drops = Array.from({length: columns}, () => Math.random() * canvas.height);
 
 function drawMatrix() {
   ctx.fillStyle = "rgba(0,0,0,0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.font = fontSize + "px monospace";
+  ctx.fillStyle = "#00ff00";
 
-  for (let i = 0; i < drops.length; i++) {
-    let text = letters.charAt(Math.floor(Math.random() * letters.length));
-    if (Math.random() < 0.003) {
-      text = specialTexts[Math.floor(Math.random() * specialTexts.length)];
-      ctx.fillStyle = "#7CFC00";
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      continue;
-    }
-    ctx.fillStyle = "#00ff00";
-    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-    drops[i] += Math.random() * 1.2 + 0.5;
-    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-  }
+  drops.forEach((y, i) => {
+    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+    ctx.fillText(text, i * fontSize, y * fontSize);
+    drops[i] = y * fontSize > canvas.height && Math.random() > 0.975 ? 0 : y + 1;
+  });
 }
 setInterval(drawMatrix, 50);
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
 
-// Tipeo natural
-function typeMessage(cartaDiv, tituloText, mensajeText) {
-  const tituloElem = cartaDiv.querySelector("h1");
-  const mensajeElem = cartaDiv.querySelector("p");
-  let tIndex = 0;
-  let mIndex = 0;
+// Efecto de tipeo
+function typeMessage(carta, tituloText, mensajeText) {
+  const h1 = carta.querySelector("h1");
+  const p = carta.querySelector("p");
+  h1.textContent = "";
+  p.textContent = "";
 
+  let i = 0, j = 0;
   function typeTitulo() {
-    if (tIndex < tituloText.length) {
-      tituloElem.innerHTML += tituloText.charAt(tIndex);
-      tIndex++;
-      setTimeout(typeTitulo, 80 + Math.random() * 40);
-    } else typeCuerpo();
+    if (i < tituloText.length) {
+      h1.textContent += tituloText[i++];
+      setTimeout(typeTitulo, 80);
+    } else typeMensaje();
   }
-
-  function typeCuerpo() {
-    if (mIndex < mensajeText.length) {
-      mensajeElem.innerHTML += mensajeText.charAt(mIndex);
-      mIndex++;
-      setTimeout(typeCuerpo, 25 + Math.random() * 20);
-    } else {
-      launchConfetti();
-      launchGlobos();
-      showSorpresa();
-      btnSiguiente.style.display = "block";
-    }
+  function typeMensaje() {
+    if (j < mensajeText.length) {
+      p.textContent += mensajeText[j++];
+      setTimeout(typeMensaje, 25);
+    } else btnSiguiente.style.display = "block";
   }
   typeTitulo();
 }
 
-// Confetti
-function launchConfetti() {
-  const confettiCount = 120;
-  const confetti = [];
-  for (let i = 0; i < confettiCount; i++) {
-    confetti.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 4 + 2,
-      d: Math.random() * 4 + 1,
-      color: `hsl(${Math.random()*360}, 100%, 50%)`
-    });
-  }
-
-  function drawConfetti() {
-    drawMatrix();
-    for (let i = 0; i < confetti.length; i++) {
-      ctx.beginPath();
-      ctx.arc(confetti[i].x, confetti[i].y, confetti[i].r, 0, Math.PI * 2);
-      ctx.fillStyle = confetti[i].color;
-      ctx.fill();
-      ctx.closePath();
-      confetti[i].y += confetti[i].d;
-      if (confetti[i].y > canvas.height) confetti[i].y = 0;
-    }
-    requestAnimationFrame(drawConfetti);
-  }
-  drawConfetti();
-}
-
-// Globos
-function launchGlobos() {
-  const globoCount = 5;
-  const globos = [];
-  for (let i = 0; i < globoCount; i++) {
-    globos.push({
-      x: Math.random() * canvas.width,
-      y: canvas.height + Math.random() * 100,
-      r: 15 + Math.random() * 10,
-      color: `hsl(${Math.random()*360}, 100%, 50%)`,
-      speed: 1 + Math.random() * 2
-    });
-  }
-
-  function drawGlobos() {
-    for (let i = 0; i < globos.length; i++) {
-      ctx.beginPath();
-      ctx.arc(globos[i].x, globos[i].y, globos[i].r, 0, Math.PI*2);
-      ctx.fillStyle = globos[i].color;
-      ctx.fill();
-      ctx.closePath();
-      globos[i].y -= globos[i].speed;
-      if (globos[i].y + globos[i].r < 0) globos[i].y = canvas.height;
-    }
-    requestAnimationFrame(drawGlobos);
-  }
-  drawGlobos();
-}
-
-// Sorpresa
-function showSorpresa() {
-  const sorpresa = document.createElement("div");
-  const emojis = ["🎁", "🎈", "✨", "💖"];
-  sorpresa.textContent = emojis[Math.floor(Math.random()*emojis.length)] + " ¡Sorpresa!";
-  sorpresa.className = "sorpresa";
-  document.body.appendChild(sorpresa);
-  setTimeout(()=>sorpresa.remove(), 2000);
-}
-
-// Música fade in
-function fadeInMusica() {
-  let vol = 0;
-  function increase() {
-    if (vol < 1) {
-      vol += 0.01;
-      musica.volume = vol;
-      requestAnimationFrame(increase);
-    }
-  }
-  increase();
-}
-
-// BOTÓN INICIO
-btnInicio.addEventListener("click", () => {
-  nombreFinal = inputNombre.value.trim() || "Aleeee";
-  inicioDiv.style.display = "none";
-
-  musica.volume = 0;
-  musica.play().catch(()=>{});
-  fadeInMusica();
-
-  const cartaDiv = document.querySelector(".carta.active");
-  cartaDiv.style.color = mensajes[mensajeActual].color;
-  typeMessage(cartaDiv, mensajes[mensajeActual].titulo, mensajes[mensajeActual].mensaje);
-});
-
-// BOTÓN SIGUIENTE
+// Botón siguiente
 btnSiguiente.addEventListener("click", () => {
   btnSiguiente.style.display = "none";
   const current = document.querySelector(".carta.active");
@@ -188,15 +67,11 @@ btnSiguiente.addEventListener("click", () => {
   current.classList.add("exit");
 
   mensajeActual++;
-
   if (mensajeActual >= mensajes.length) {
     setTimeout(() => {
       const finalMsg = document.createElement("div");
       finalMsg.className = "final";
-      finalMsg.innerHTML = `
-        <h1>🎂 ¡Feliz cumpleaños, ${nombreFinal}! 🎂</h1>
-        <p>Gracias por ser una persona increíble 💚</p>
-      `;
+      finalMsg.innerHTML = `<h1>🎂 ¡Feliz cumple, Ale! 🎂</h1><p>Gracias por ser una persona increíble 💚</p>`;
       document.body.appendChild(finalMsg);
     }, 1000);
     return;
@@ -213,4 +88,13 @@ btnSiguiente.addEventListener("click", () => {
     typeMessage(next, mensajes[mensajeActual].titulo, mensajes[mensajeActual].mensaje);
     next.classList.remove("enter");
   }, 1000);
+});
+
+// Inicia automáticamente
+window.addEventListener("load", () => {
+  musica.volume = 0.3;
+  musica.play().catch(()=>{});
+  const carta = document.querySelector(".carta");
+  carta.style.color = mensajes[mensajeActual].color;
+  typeMessage(carta, mensajes[mensajeActual].titulo, mensajes[mensajeActual].mensaje);
 });
