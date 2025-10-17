@@ -13,14 +13,20 @@
     <source src="musica.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- Fondo Matrix -->
   <canvas id="matrix"></canvas>
 
-  <div class="carta" id="carta">
-    <h1 id="titulo"></h1>
-    <p id="mensaje"></p>
+  <!-- Escena para efecto de cambio de plano -->
+  <div class="scene">
+    <div class="carta active" id="carta">
+      <h1></h1>
+      <p></p>
+    </div>
   </div>
 
-  <button id="btn-musica">🎵 Reproducir música de fondo</button>
+  <!-- Botones -->
+  <button id="btn-inicio">🎵 Iniciar celebración</button>
+  <button id="btn-siguiente" style="display:none;">➡ Siguiente mensaje</button>
 
   <script src="script.js"></script>
 </body>
