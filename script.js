@@ -33,12 +33,10 @@ function drawMatrix() {
   ctx.fillStyle = "rgba(0,0,0,0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#00ff00";
   ctx.font = fontSize + "px monospace";
 
   for (let i = 0; i < drops.length; i++) {
     let text = letters.charAt(Math.floor(Math.random() * letters.length));
-
     if (Math.random() < 0.003) {
       text = specialTexts[Math.floor(Math.random() * specialTexts.length)];
       ctx.fillStyle = "#7CFC00";
@@ -46,7 +44,7 @@ function drawMatrix() {
       ctx.fillStyle = "#00ff00";
       continue;
     }
-
+    ctx.fillStyle = "#00ff00";
     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
     drops[i] += Math.random() * 1.2 + 0.5;
     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
@@ -59,7 +57,7 @@ window.addEventListener('resize', () => {
   canvas.height = window.innerHeight;
 });
 
-// FUNCIÓN DE ESCRITURA
+// Tipeo natural
 function typeMessage(cartaDiv, tituloText, mensajeText) {
   const tituloElem = cartaDiv.querySelector("h1");
   const mensajeElem = cartaDiv.querySelector("p");
@@ -70,10 +68,8 @@ function typeMessage(cartaDiv, tituloText, mensajeText) {
     if (tIndex < tituloText.length) {
       tituloElem.innerHTML += tituloText.charAt(tIndex);
       tIndex++;
-      setTimeout(typeTitulo, 80 + Math.random() * 40); // velocidad natural
-    } else {
-      typeCuerpo();
-    }
+      setTimeout(typeTitulo, 80 + Math.random() * 40);
+    } else typeCuerpo();
   }
 
   function typeCuerpo() {
@@ -83,6 +79,8 @@ function typeMessage(cartaDiv, tituloText, mensajeText) {
       setTimeout(typeCuerpo, 25 + Math.random() * 20);
     } else {
       launchConfetti();
+      launchGlobos();
+      showSorpresa();
       btnSiguiente.style.display = "block";
     }
   }
@@ -90,21 +88,21 @@ function typeMessage(cartaDiv, tituloText, mensajeText) {
   typeTitulo();
 }
 
-// CONFETTI
+// Confetti multicolor
 function launchConfetti() {
-  const confettiCount = 100;
+  const confettiCount = 120;
   const confetti = [];
   for (let i = 0; i < confettiCount; i++) {
     confetti.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       r: Math.random() * 4 + 2,
-      d: Math.random() * 4 + 1
+      d: Math.random() * 4 + 1,
+      color: `hsl(${Math.random()*360}, 100%, 50%)`
     });
   }
 
   function drawConfetti() {
-    // fondo más tenue para mantener Matrix visible
     ctx.fillStyle = "rgba(0,0,0,0.1)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     drawMatrix();
@@ -112,7 +110,7 @@ function launchConfetti() {
     for (let i = 0; i < confetti.length; i++) {
       ctx.beginPath();
       ctx.arc(confetti[i].x, confetti[i].y, confetti[i].r, 0, Math.PI * 2);
-      ctx.fillStyle = "#00ff00";
+      ctx.fillStyle = confetti[i].color;
       ctx.fill();
       ctx.closePath();
       confetti[i].y += confetti[i].d;
@@ -120,11 +118,49 @@ function launchConfetti() {
     }
     requestAnimationFrame(drawConfetti);
   }
-
   drawConfetti();
 }
 
-// FADER DE MÚSICA
+// Globos flotando
+function launchGlobos() {
+  const globoCount = 5;
+  const globos = [];
+  for (let i = 0; i < globoCount; i++) {
+    globos.push({
+      x: Math.random() * canvas.width,
+      y: canvas.height + Math.random() * 100,
+      r: 15 + Math.random() * 10,
+      color: `hsl(${Math.random()*360}, 100%, 50%)`,
+      speed: 1 + Math.random() * 2
+    });
+  }
+
+  function drawGlobos() {
+    for (let i = 0; i < globos.length; i++) {
+      ctx.beginPath();
+      ctx.arc(globos[i].x, globos[i].y, globos[i].r, 0, Math.PI*2);
+      ctx.fillStyle = globos[i].color;
+      ctx.fill();
+      ctx.closePath();
+      globos[i].y -= globos[i].speed;
+      if (globos[i].y + globos[i].r < 0) globos[i].y = canvas.height;
+    }
+    requestAnimationFrame(drawGlobos);
+  }
+  drawGlobos();
+}
+
+// Mensaje sorpresa
+function showSorpresa() {
+  const sorpresa = document.createElement("div");
+  const emojis = ["🎁", "🎈", "✨", "💖"];
+  sorpresa.textContent = emojis[Math.floor(Math.random()*emojis.length)] + " Sorpresa!";
+  sorpresa.className = "sorpresa";
+  document.body.appendChild(sorpresa);
+  setTimeout(()=>sorpresa.remove(), 2000);
+}
+
+// Música fade in
 function fadeInMusica() {
   let vol = 0;
   function increase() {
@@ -139,13 +175,12 @@ function fadeInMusica() {
 
 // BOTÓN INICIO
 btnInicio.addEventListener("click", () => {
-  // Música fade in
   musica.volume = 0;
-  musica.play().catch(() => {});
+  musica.play().catch(()=>{});
   fadeInMusica();
   btnInicio.style.display = "none";
 
-  // Crear botón flotante de control de música
+  // Botón flotante de música
   const musicToggle = document.createElement("button");
   musicToggle.id = "music-toggle";
   musicToggle.textContent = "⏸️ Pausar música";
@@ -161,7 +196,6 @@ btnInicio.addEventListener("click", () => {
     }
   });
 
-  // Primer mensaje
   const cartaDiv = document.querySelector(".carta.active");
   cartaDiv.style.color = mensajes[mensajeActual].color;
   typeMessage(cartaDiv, mensajes[mensajeActual].titulo, mensajes[mensajeActual].mensaje);
@@ -178,7 +212,7 @@ btnSiguiente.addEventListener("click", () => {
   mensajeActual++;
 
   if (mensajeActual >= mensajes.length) {
-    // MENSAJE FINAL 💚
+    // Mensaje final
     setTimeout(() => {
       const finalMsg = document.createElement("div");
       finalMsg.className = "final";
@@ -191,7 +225,6 @@ btnSiguiente.addEventListener("click", () => {
     return;
   }
 
-  // NUEVA CARTA
   const next = document.createElement("div");
   next.className = "carta enter active";
   next.style.color = mensajes[mensajeActual].color;
