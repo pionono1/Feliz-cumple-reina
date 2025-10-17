@@ -71,7 +71,7 @@ btnSiguiente.addEventListener("click", () => {
     setTimeout(() => {
       const finalMsg = document.createElement("div");
       finalMsg.className = "final";
-      finalMsg.innerHTML = `<h1>🎂 ¡Feliz cumple, Ale! 🎂</h1><p>Gracias por ser una persona increíble 💚</p>`;
+      finalMsg.innerHTML = `<h1>🎂 Feliz cumple, ten bonita noche Ale 🎂</h1><p>Gracias por ser una persona increíble :D (no a las migajas, si a la plata)</p>`;
       document.body.appendChild(finalMsg);
     }, 1000);
     return;
@@ -98,4 +98,5 @@ window.addEventListener("load", () => {
   carta.style.color = mensajes[mensajeActual].color;
   typeMessage(carta, mensajes[mensajeActual].titulo, mensajes[mensajeActual].mensaje);
 });
+
 
