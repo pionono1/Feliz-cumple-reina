@@ -14,7 +14,6 @@ body {
   position: relative;
 }
 
-/* Glow difuso de fondo */
 body::before {
   content: "";
   position: fixed;
@@ -24,7 +23,6 @@ body::before {
   z-index: 0;
 }
 
-/* Canvas Matrix */
 canvas {
   position: fixed;
   top: 0;
@@ -32,7 +30,6 @@ canvas {
   z-index: 1;
 }
 
-/* Escena y cartas */
 .scene {
   perspective: 1000px;
   width: 100%;
@@ -79,7 +76,6 @@ canvas {
   text-shadow: 0 0 4px #00ff00;
 }
 
-/* Animación de cambio de plano */
 .carta.exit {
   transform: translate(-50%, -50%) scale(0.1) rotateY(90deg);
   opacity: 0;
@@ -90,7 +86,6 @@ canvas {
   opacity: 1;
 }
 
-/* Botones */
 button {
   position: absolute;
   bottom: 20px;
@@ -114,7 +109,6 @@ button:hover {
   transform: translateX(-50%) scale(1.1);
 }
 
-/* Mensaje final */
 .final {
   position: fixed;
   top: 0; left: 0;
@@ -134,4 +128,22 @@ button:hover {
 @keyframes fadein {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+.sorpresa {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  color: #ff0;
+  text-shadow: 0 0 10px #ff0;
+  z-index: 50;
+  animation: fadeinout 2s ease forwards;
+}
+
+@keyframes fadeinout {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  50% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -20px); }
 }
